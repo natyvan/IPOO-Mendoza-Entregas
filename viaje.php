@@ -138,13 +138,15 @@ class Viaje{
     //@documento
     public function eliminarPasajero($documento)
     {
+        $cadena="";
         foreach ($this->pasajeros as $index => $pasajero) {
             if ($pasajero["documento"] == $documento) {
                 array_splice($this->pasajeros, $index, 1);
-                echo "Pasajero eliminado exitosamente.\n";
-                return;
+                $cadena= "Pasajero eliminado exitosamente.\n";
+                return $cadena;
+               
             }
         }
-        echo "No se encontró al pasajero con el número de documento ingresado.\n";
+        return "No se encontró al pasajero con el número de documento ingresado.\n";
     }
 }
