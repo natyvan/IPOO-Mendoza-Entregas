@@ -83,7 +83,7 @@ while ($opcion != 9) {
         case 7:
             echo "Ingrese el documento del pasajero que desea eliminar: ";
             $documento = trim(fgets(STDIN));
-            $viaje->eliminarPasajero($documento);
+            echo $viaje->eliminarPasajero($documento);
             break;
 
         case 8:
