@@ -1,3 +1,4 @@
+
 <?php 
 class Viaje{
     private $codigo;
@@ -5,11 +6,15 @@ class Viaje{
     private $CantMaxP;
     private $responsableV;
     private $pasajeros= [];
+    private $costo;
+    private $importePagado;
 
-    public function __construct($codigo,$destino,$CantMaxP){ //no es necesario inicializar la coleccion de pasajeros 
+    public function __construct($codigo,$destino,$CantMaxP,$costo,$importe ){ //no es necesario inicializar la coleccion de pasajeros 
         $this->codigo= $codigo; 
         $this->destino = $destino;
         $this->CantMaxP = $CantMaxP;
+        $this->costo= $costo;
+        $this->importePagado= $importe;
        // $this->responsableV= $responsableV;
       //  $this->pasajeros = [];//se puede hacer asi tambien 
 
@@ -75,6 +80,20 @@ class Viaje{
         $this->pasajeros = $objPasajeros;
     }
 
+    public function setCosto($costo){
+        $this->costo= $costo;
+    }
+    public function getCosto(){
+        return $this->costo;
+    }
+
+    public function setImportePagado($importe){
+        $this->importePagado= $importe;
+    }
+    public function getImportePagado(){
+        return $this->importePagado;
+    }
+
     public function verResponsable(){
         $stringResp= "";
         if($this->responsableV == null){
@@ -88,7 +107,7 @@ class Viaje{
     }
 
     public function __toString() {
-        $str = "Informacion del viaje\n"."Codigo: ".$this->getCodigo(). " - destino: ".$this->getDestino(). " - Cant Max pasajeros: ".$this->getCantMaxP() ."\n Responsable del viaje => ".$this->verResponsable()." Lista de pasajeros:\n";
+        $str = "Informacion del viaje\n"."Codigo: ".$this->getCodigo(). " - destino: ".$this->getDestino(). " - Cant Max pasajeros: ".$this->getCantMaxP() ."\n Responsable del viaje => ".$this->verResponsable()."\n Costo Viaje: ".$this->getCosto()."\nImporte Abonado: ".$this->getImportePagado()."\nLista de pasajeros:\n";
 
         foreach ($this->pasajeros as $pasajero) {
             $str .= "- " . $pasajero->getNombre() . " " . $pasajero->getApellido() ." DNI: ".$pasajero->getDocumento(). " (Telefono: " . $pasajero->getTelefono() .")\n";
@@ -192,8 +211,36 @@ class Viaje{
           $rta= true;
         }
           return $rta;
-}
+      }
+
+      public function venderPasaje($objPasajero){
+        $pasajeros= $this->getPasajeros();
+        $importe= $this->getImportePagado();
+
+        $importePasajero=null;
+
+        if(hayPasajesDisponibles()){
+            $pasajeros[]=$objPasajero;
+            $this->setPasajeros($pasajeros);
+            $incremento=$objPasajero->darPorcentajeIncremento();
+            
+            $importePasajero= $this->getCosto() * $incremento;
+
+            $importe+= $importePasajero  ;
+       
+            $this->setImportePagado($importe);
+        }
+
+        return $importePasajero;      
+      }
+
+      public function hayPasajesDisponibles(){
+        $pasajeros= $this->getPasajeros();
+        $cantidadPasajeros= count($pasajeros);
+
+        $lugaresDisponibles= $cantidaPasajeros< $CantMaxP;
+
+        return $lugaresDisponibles;
+      }
 
 }
-
-
